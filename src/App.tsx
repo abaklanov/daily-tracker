@@ -1,14 +1,24 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { ActivityCalendar, type Activity } from "react-activity-calendar";
+import "react-activity-calendar/tooltips.css";
 
 type Page = "tracker" | "calendar";
 
-interface CompletionRecord {
-  date: string; // YYYY-MM-DD
-  count: number;
+function todayStr(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
-function todayStr(): string {
-  return new Date().toISOString().slice(0, 10);
+function shiftDate(iso: string, days: number): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(y, m - 1, d + days);
+  const yy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yy}-${mm}-${dd}`;
 }
 
 function getCompletions(): Record<string, number> {
@@ -31,123 +41,56 @@ function getLevel(count: number): number {
   return 4;
 }
 
-const LEVEL_COLORS = [
-  "bg-[#1a1a1d] border border-[#2a2a2e]",
-  "bg-[#166534]",
-  "bg-[#16a34a]",
-  "bg-[#4ade80]",
-  "bg-[#86efac]",
-];
+const CALENDAR_THEME = {
+  light: ["#1a1a1d", "#166534", "#16a34a", "#4ade80", "#86efac"],
+  dark: ["#1a1a1d", "#166534", "#16a34a", "#4ade80", "#86efac"],
+};
 
-function CalendarGrid({ completions }: { completions: Record<string, number> }) {
-  const today = new Date();
-  const weeks: Array<Array<{ date: string; count: number } | null>> = [];
+const CALENDAR_LABELS = {
+  months: [
+    "tammi",
+    "helmi",
+    "maalis",
+    "huhti",
+    "touko",
+    "kesä",
+    "heinä",
+    "elo",
+    "syys",
+    "loka",
+    "marras",
+    "joulu",
+  ],
+  weekdays: ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"],
+  totalCount: "{{count}} yhteensä",
+  legend: {
+    less: "Vähemmän",
+    more: "Enemmän",
+  },
+};
 
-  // Build 52 weeks + partial current week going back from today
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 364);
-  // Align to Sunday
-  startDate.setDate(startDate.getDate() - startDate.getDay());
+function toActivityData(completions: Record<string, number>): Activity[] {
+  const today = todayStr();
+  const startDate = shiftDate(today, -364);
+  const byDate: Record<string, Activity> = {
+    [startDate]: {
+      date: startDate,
+      count: completions[startDate] || 0,
+      level: getLevel(completions[startDate] || 0),
+    },
+    [today]: {
+      date: today,
+      count: completions[today] || 0,
+      level: getLevel(completions[today] || 0),
+    },
+  };
 
-  const cursor = new Date(startDate);
-  while (cursor <= today) {
-    const week: Array<{ date: string; count: number } | null> = [];
-    for (let d = 0; d < 7; d++) {
-      if (cursor > today) {
-        week.push(null);
-      } else {
-        const ds = cursor.toISOString().slice(0, 10);
-        week.push({ date: ds, count: completions[ds] || 0 });
-      }
-      cursor.setDate(cursor.getDate() + 1);
-    }
-    weeks.push(week);
+  for (const [date, count] of Object.entries(completions)) {
+    if (date < startDate || date > today) continue;
+    byDate[date] = { date, count, level: getLevel(count) };
   }
 
-  // Month labels
-  const monthLabels: Array<{ label: string; col: number }> = [];
-  let lastMonth = -1;
-  weeks.forEach((week, wi) => {
-    const firstDay = week.find((d) => d !== null);
-    if (!firstDay) return;
-    const m = new Date(firstDay.date).getMonth();
-    if (m !== lastMonth) {
-      monthLabels.push({
-        label: new Date(firstDay.date).toLocaleDateString("fi-FI", { month: "short" }),
-        col: wi,
-      });
-      lastMonth = m;
-    }
-  });
-
-  const total = Object.values(completions).reduce((s, v) => s + v, 0);
-
-  return (
-    <div className="w-full overflow-x-auto pb-2">
-      <div className="min-w-max">
-        {/* Month labels */}
-        <div className="flex mb-1 ml-8" style={{ gap: "3px" }}>
-          {weeks.map((_, wi) => {
-            const label = monthLabels.find((m) => m.col === wi);
-            return (
-              <div
-                key={wi}
-                className="w-[11px] shrink-0 text-[10px] leading-none"
-                style={{ fontFamily: "var(--font-mono)", color: "var(--color-muted)" }}
-              >
-                {label ? label.label : ""}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="flex" style={{ gap: "3px" }}>
-          {/* Day labels */}
-          <div className="flex flex-col mr-1" style={{ gap: "3px" }}>
-            {["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"].map((day, i) => (
-              <div
-                key={i}
-                className="h-[11px] text-[9px] leading-[11px] pr-1 text-right"
-                style={{ fontFamily: "var(--font-mono)", color: "var(--color-muted)", width: 20 }}
-              >
-                {i % 2 === 1 ? day : ""}
-              </div>
-            ))}
-          </div>
-
-          {/* Grid */}
-          {weeks.map((week, wi) => (
-            <div key={wi} className="flex flex-col" style={{ gap: "3px" }}>
-              {week.map((day, di) =>
-                day === null ? (
-                  <div key={di} className="w-[11px] h-[11px] rounded-[2px]" />
-                ) : (
-                  <div
-                    key={di}
-                    title={`${day.date}: ${day.count} tehty`}
-                    className={`w-[11px] h-[11px] rounded-[2px] cursor-default transition-transform hover:scale-125 ${LEVEL_COLORS[getLevel(day.count)]}`}
-                  />
-                )
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Legend */}
-        <div
-          className="flex items-center gap-1 mt-3 ml-8"
-          style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--color-muted)" }}
-        >
-          <span>Vähemmän</span>
-          {LEVEL_COLORS.map((cls, i) => (
-            <div key={i} className={`w-[11px] h-[11px] rounded-[2px] ${cls}`} />
-          ))}
-          <span>Enemmän</span>
-          <span className="ml-auto">{total} yhteensä</span>
-        </div>
-      </div>
-    </div>
-  );
+  return Object.values(byDate).sort((a, b) => a.date.localeCompare(b.date));
 }
 
 function TrackerPage({ onMark }: { onMark: () => void }) {
@@ -232,18 +175,18 @@ function CalendarPage() {
 
   const streak = (() => {
     let s = 0;
-    const cursor = new Date();
-    while (true) {
-      const ds = cursor.toISOString().slice(0, 10);
-      if (!completions[ds]) break;
+    let cursor = todayStr();
+    while (completions[cursor]) {
       s++;
-      cursor.setDate(cursor.getDate() - 1);
+      cursor = shiftDate(cursor, -1);
     }
     return s;
   })();
 
+  const activityData = useMemo(() => toActivityData(completions), [completions]);
+
   const thisMonth = (() => {
-    const prefix = new Date().toISOString().slice(0, 7);
+    const prefix = todayStr().slice(0, 7);
     return Object.entries(completions)
       .filter(([k]) => k.startsWith(prefix))
       .reduce((s, [, v]) => s + v, 0);
@@ -290,7 +233,27 @@ function CalendarPage() {
         className="rounded-xl p-5"
         style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
       >
-        <CalendarGrid completions={completions} />
+        <ActivityCalendar
+          data={activityData}
+          colorScheme="dark"
+          theme={CALENDAR_THEME}
+          labels={CALENDAR_LABELS}
+          weekStart={0}
+          blockSize={11}
+          blockRadius={2}
+          blockMargin={3}
+          fontSize={12}
+          showWeekdayLabels
+          style={{
+            color: "var(--color-muted)",
+            fontFamily: "var(--font-mono)",
+          }}
+          tooltips={{
+            activity: {
+              text: ({ count, date }) => `${date}: ${count} tehty`,
+            },
+          }}
+        />
       </div>
     </div>
   );

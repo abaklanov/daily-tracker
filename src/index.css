@@ -33,3 +33,13 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans);
 }
+
+.react-activity-calendar__tooltip[data-color-scheme='dark'] {
+  background-color: #1e1e21;
+  color: #e8e8ea;
+}
+
+.react-activity-calendar__tooltip[data-color-scheme='dark']
+  .react-activity-calendar__tooltip-arrow {
+  fill: #1e1e21;
+}
