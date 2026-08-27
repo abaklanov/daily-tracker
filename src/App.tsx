@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { ActivityCalendar, type Activity } from "react-activity-calendar";
 import "react-activity-calendar/tooltips.css";
 
@@ -138,7 +139,7 @@ function TrackerPage({ onMark }: { onMark: () => void }) {
         `}
         style={{ cursor: "pointer" }}
       >
-        <span className="text-5xl select-none">✓</span>
+        <CheckIcon className="size-12" aria-hidden="true" />
         <span
           style={{
             fontFamily: "var(--font-mono)",

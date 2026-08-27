@@ -10,6 +10,7 @@
     "format": "oxfmt"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "react": "^19.0.0",
     "react-activity-calendar": "^3.2.1",
     "react-dom": "^19.0.0"
