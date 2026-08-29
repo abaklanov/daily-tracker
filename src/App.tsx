@@ -20,10 +20,11 @@ export default function App() {
           <button
             key={p}
             onClick={() => setPage(p)}
-            className="px-4 py-1.5 rounded-lg text-sm transition-all"
+            className={`px-4 py-1.5 rounded-lg text-sm transition-all ${
+              page === p ? "font-medium" : "font-normal"
+            }`}
             style={{
               fontFamily: "var(--font-sans)",
-              fontWeight: page === p ? 500 : 400,
               background: page === p ? "var(--color-surface-raised)" : "transparent",
               color: page === p ? "var(--color-text)" : "var(--color-muted)",
               border: page === p ? "1px solid var(--color-border)" : "1px solid transparent",
