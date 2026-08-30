@@ -1,0 +1,28 @@
+{
+  "nav": {
+    "tracker": "Merkitse",
+    "calendar": "Kalenteri",
+    "language": "Kieli"
+  },
+  "tracker": {
+    "title": "Tänään tehty",
+    "subtitle": "Paina nappia joka kerta kun saat asian tehtyä",
+    "markDone": "Merkitse tehty",
+    "marked": "Merkitty!",
+    "doneToday": "tehty tänään"
+  },
+  "calendar": {
+    "title": "Aktiivisuus",
+    "subtitle": "Viimeiset 365 päivää",
+    "streak": "Putki",
+    "days": "päivää",
+    "thisMonth": "Tässä kuussa",
+    "done": "tehty",
+    "totalCount": "{{count}} yhteensä",
+    "less": "Vähemmän",
+    "more": "Enemmän",
+    "activity": "{{date}}: {{count}} tehty",
+    "months": ["tammi", "helmi", "maalis", "huhti", "touko", "kesä", "heinä", "elo", "syys", "loka", "marras", "joulu"],
+    "weekdays": ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"]
+  }
+}

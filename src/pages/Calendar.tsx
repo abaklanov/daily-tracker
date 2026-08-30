@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityCalendar, type Activity } from "react-activity-calendar";
 import "react-activity-calendar/tooltips.css";
 import { getCompletions, getLevel, shiftDate, todayStr } from "../completions";
@@ -6,29 +7,6 @@ import { getCompletions, getLevel, shiftDate, todayStr } from "../completions";
 const CALENDAR_THEME = {
   light: ["#1a1a1d", "#166534", "#16a34a", "#4ade80", "#86efac"],
   dark: ["#1a1a1d", "#166534", "#16a34a", "#4ade80", "#86efac"],
-};
-
-const CALENDAR_LABELS = {
-  months: [
-    "tammi",
-    "helmi",
-    "maalis",
-    "huhti",
-    "touko",
-    "kesä",
-    "heinä",
-    "elo",
-    "syys",
-    "loka",
-    "marras",
-    "joulu",
-  ],
-  weekdays: ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"],
-  totalCount: "{{count}} yhteensä",
-  legend: {
-    less: "Vähemmän",
-    more: "Enemmän",
-  },
 };
 
 function toActivityData(completions: Record<string, number>): Activity[] {
@@ -56,6 +34,7 @@ function toActivityData(completions: Record<string, number>): Activity[] {
 }
 
 export default function Calendar() {
+  const { t } = useTranslation();
   const [completions, setCompletions] = useState(getCompletions);
 
   useEffect(() => {
@@ -89,16 +68,16 @@ export default function Calendar() {
         className="text-4xl mb-2"
         style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
       >
-        Aktiivisuus
+        {t("calendar.title")}
       </h1>
       <p className="mb-8" style={{ color: "var(--color-muted)", fontSize: 14 }}>
-        Viimeiset 365 päivää
+        {t("calendar.subtitle")}
       </p>
 
       <div className="flex gap-4 mb-10">
         {[
-          { label: "Putki", value: streak, unit: "päivää" },
-          { label: "Tässä kuussa", value: thisMonth, unit: "tehty" },
+          { label: t("calendar.streak"), value: streak, unit: t("calendar.days") },
+          { label: t("calendar.thisMonth"), value: thisMonth, unit: t("calendar.done") },
         ].map(({ label, value, unit }) => (
           <div
             key={label}
@@ -126,7 +105,15 @@ export default function Calendar() {
           data={activityData}
           colorScheme="dark"
           theme={CALENDAR_THEME}
-          labels={CALENDAR_LABELS}
+          labels={{
+            months: t("calendar.months", { returnObjects: true }) as string[],
+            weekdays: t("calendar.weekdays", { returnObjects: true }) as string[],
+            totalCount: t("calendar.totalCount"),
+            legend: {
+              less: t("calendar.less"),
+              more: t("calendar.more"),
+            },
+          }}
           weekStart={0}
           blockSize={11}
           blockRadius={2}
@@ -139,7 +126,7 @@ export default function Calendar() {
           }}
           tooltips={{
             activity: {
-              text: ({ count, date }) => `${date}: ${count} tehty`,
+              text: ({ count, date }) => t("calendar.activity", { count, date }),
             },
           }}
         />

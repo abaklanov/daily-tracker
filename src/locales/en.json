@@ -1,0 +1,28 @@
+{
+  "nav": {
+    "tracker": "Track",
+    "calendar": "Calendar",
+    "language": "Language"
+  },
+  "tracker": {
+    "title": "Done today",
+    "subtitle": "Press the button each time you get something done",
+    "markDone": "Mark done",
+    "marked": "Marked!",
+    "doneToday": "done today"
+  },
+  "calendar": {
+    "title": "Activity",
+    "subtitle": "Last 365 days",
+    "streak": "Streak",
+    "days": "days",
+    "thisMonth": "This month",
+    "done": "done",
+    "totalCount": "{{count}} in total",
+    "less": "Less",
+    "more": "More",
+    "activity": "{{date}}: {{count}} done",
+    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  }
+}

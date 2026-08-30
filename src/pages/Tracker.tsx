@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { getCompletions, saveCompletions, todayStr } from "../completions";
 
 export default function Tracker() {
+  const { t } = useTranslation();
   const [flash, setFlash] = useState(false);
   const [todayCount, setTodayCount] = useState(() => {
     const c = getCompletions();
@@ -26,10 +28,10 @@ export default function Tracker() {
           className="text-5xl mb-3 leading-tight"
           style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
         >
-          Tänään tehty
+          {t("tracker.title")}
         </h1>
         <p style={{ color: "var(--color-muted)", fontFamily: "var(--font-sans)", fontSize: 15 }}>
-          Paina nappia joka kerta kun saat asian tehtyä
+          {t("tracker.subtitle")}
         </p>
       </div>
 
@@ -55,7 +57,7 @@ export default function Tracker() {
             transition: "color 0.3s",
           }}
         >
-          {flash ? "Merkitty!" : "Merkitse tehty"}
+          {flash ? t("tracker.marked") : t("tracker.markDone")}
         </span>
       </button>
 
@@ -66,7 +68,7 @@ export default function Tracker() {
         <span className="text-4xl" style={{ color: "var(--color-accent)" }}>
           {todayCount}
         </span>
-        <span style={{ color: "var(--color-muted)", fontSize: 12 }}>tehty tänään</span>
+        <span style={{ color: "var(--color-muted)", fontSize: 12 }}>{t("tracker.doneToday")}</span>
       </div>
     </div>
   );
