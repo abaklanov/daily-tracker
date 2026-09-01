@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CalendarDaysIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import Tracker from "./pages/Tracker";
 import Calendar from "./pages/Calendar";
 
 type Page = "tracker" | "calendar";
+
+const NAV_ICONS = {
+  tracker: CheckCircleIcon,
+  calendar: CalendarDaysIcon,
+} as const;
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -21,24 +27,30 @@ export default function App() {
       >
         <div />
         <div className="flex items-center justify-center gap-1">
-          {(["tracker", "calendar"] as Page[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPage(p)}
-              className={`px-4 py-1.5 rounded-lg text-sm transition-all ${
-                page === p ? "font-medium" : "font-normal"
-              }`}
-              style={{
-                fontFamily: "var(--font-sans)",
-                background: page === p ? "var(--color-surface-raised)" : "transparent",
-                color: page === p ? "var(--color-text)" : "var(--color-muted)",
-                border: page === p ? "1px solid var(--color-border)" : "1px solid transparent",
-                cursor: "pointer",
-              }}
-            >
-              {t(`nav.${p}`)}
-            </button>
-          ))}
+          {(["tracker", "calendar"] as Page[]).map((p) => {
+            const Icon = NAV_ICONS[p];
+            const label = t(`nav.${p}`);
+            return (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                aria-label={label}
+                className={`px-3 py-1.5 sm:px-4 rounded-lg text-sm transition-all ${
+                  page === p ? "font-medium" : "font-normal"
+                }`}
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  background: page === p ? "var(--color-surface-raised)" : "transparent",
+                  color: page === p ? "var(--color-text)" : "var(--color-muted)",
+                  border: page === p ? "1px solid var(--color-border)" : "1px solid transparent",
+                  cursor: "pointer",
+                }}
+              >
+                <Icon className="size-5 sm:hidden" aria-hidden="true" />
+                <span className="hidden sm:inline">{label}</span>
+              </button>
+            );
+          })}
         </div>
 
         <select
