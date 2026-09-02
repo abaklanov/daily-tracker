@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CalendarDaysIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import LanguageSelector from "./LanguageSelector";
 import Tracker from "./pages/Tracker";
 import Calendar from "./pages/Calendar";
 
@@ -12,9 +13,8 @@ const NAV_ICONS = {
 } as const;
 
 export default function App() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [page, setPage] = useState<Page>("tracker");
-  const language = i18n.resolvedLanguage?.startsWith("en") ? "en" : "fi";
 
   return (
     <div
@@ -53,24 +53,7 @@ export default function App() {
           })}
         </div>
 
-        <select
-          value={language}
-          onChange={(e) => {
-            void i18n.changeLanguage(e.target.value);
-          }}
-          aria-label={t("nav.language")}
-          className="justify-self-end rounded-lg px-2 py-1.5 text-sm"
-          style={{
-            fontFamily: "var(--font-sans)",
-            background: "var(--color-surface-raised)",
-            color: "var(--color-text)",
-            border: "1px solid var(--color-border)",
-            cursor: "pointer",
-          }}
-        >
-          <option value="fi">Suomi</option>
-          <option value="en">English</option>
-        </select>
+        <LanguageSelector />
       </nav>
 
       <div className="flex-1 overflow-auto">
