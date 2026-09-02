@@ -21,9 +21,9 @@ function EnglishFlag() {
   return (
     <svg
       className="size-6"
-      enable-background="new 0 0 512 512"
       viewBox="0 0 512 512"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
       <circle cx="256" cy="256" fill="#f0f0f0" r="256" />
       <g fill="#0052b4">
