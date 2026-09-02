@@ -22,7 +22,20 @@
     "less": "Vähemmän",
     "more": "Enemmän",
     "activity": "{{date}}: {{count}} tehty",
-    "months": ["tammi", "helmi", "maalis", "huhti", "touko", "kesä", "heinä", "elo", "syys", "loka", "marras", "joulu"],
+    "months": [
+      "tammi",
+      "helmi",
+      "maalis",
+      "huhti",
+      "touko",
+      "kesä",
+      "heinä",
+      "elo",
+      "syys",
+      "loka",
+      "marras",
+      "joulu"
+    ],
     "weekdays": ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"]
   }
 }

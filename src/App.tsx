@@ -40,9 +40,14 @@ export default function App() {
                 }`}
                 style={{
                   fontFamily: "var(--font-sans)",
-                  background: page === p ? "var(--color-surface-raised)" : "transparent",
-                  color: page === p ? "var(--color-text)" : "var(--color-muted)",
-                  border: page === p ? "1px solid var(--color-border)" : "1px solid transparent",
+                  background:
+                    page === p ? "var(--color-surface-raised)" : "transparent",
+                  color:
+                    page === p ? "var(--color-text)" : "var(--color-muted)",
+                  border:
+                    page === p
+                      ? "1px solid var(--color-border)"
+                      : "1px solid transparent",
                   cursor: "pointer",
                 }}
               >

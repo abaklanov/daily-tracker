@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
 
 html,
 body,
@@ -16,9 +16,9 @@ body,
   --color-muted: #6b6b72;
   --color-accent: #4ade80;
   --color-accent-dim: #166534;
-  --font-display: 'Fraunces', serif;
-  --font-sans: 'Outfit', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: "Fraunces", serif;
+  --font-sans: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 * {
@@ -34,12 +34,12 @@ body {
   font-family: var(--font-sans);
 }
 
-.react-activity-calendar__tooltip[data-color-scheme='dark'] {
+.react-activity-calendar__tooltip[data-color-scheme="dark"] {
   background-color: #1e1e21;
   color: #e8e8ea;
 }
 
-.react-activity-calendar__tooltip[data-color-scheme='dark']
+.react-activity-calendar__tooltip[data-color-scheme="dark"]
   .react-activity-calendar__tooltip-arrow {
   fill: #1e1e21;
 }

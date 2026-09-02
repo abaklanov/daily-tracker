@@ -26,11 +26,20 @@ export default function Tracker() {
       <div className="text-center">
         <h1
           className="text-5xl mb-3 leading-tight"
-          style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+          style={{
+            fontFamily: "var(--font-display)",
+            color: "var(--color-text)",
+          }}
         >
           {t("tracker.title")}
         </h1>
-        <p style={{ color: "var(--color-muted)", fontFamily: "var(--font-sans)", fontSize: 15 }}>
+        <p
+          style={{
+            color: "var(--color-muted)",
+            fontFamily: "var(--font-sans)",
+            fontSize: 15,
+          }}
+        >
           {t("tracker.subtitle")}
         </p>
       </div>
@@ -41,9 +50,10 @@ export default function Tracker() {
           relative w-48 h-48 rounded-full border-2 transition-all duration-300 select-none
           flex flex-col items-center justify-center gap-3
           active:scale-95 hover:scale-105
-          ${flash
-            ? "border-[var(--color-accent)] bg-[var(--color-accent-dim)] shadow-[0_0_40px_8px_rgba(74,222,128,0.25)]"
-            : "border-[var(--color-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent)] hover:shadow-[0_0_24px_4px_rgba(74,222,128,0.12)]"
+          ${
+            flash
+              ? "border-[var(--color-accent)] bg-[var(--color-accent-dim)] shadow-[0_0_40px_8px_rgba(74,222,128,0.25)]"
+              : "border-[var(--color-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent)] hover:shadow-[0_0_24px_4px_rgba(74,222,128,0.12)]"
           }
         `}
         style={{ cursor: "pointer" }}
@@ -68,7 +78,9 @@ export default function Tracker() {
         <span className="text-4xl" style={{ color: "var(--color-accent)" }}>
           {todayCount}
         </span>
-        <span style={{ color: "var(--color-muted)", fontSize: 12 }}>{t("tracker.doneToday")}</span>
+        <span style={{ color: "var(--color-muted)", fontSize: 12 }}>
+          {t("tracker.doneToday")}
+        </span>
       </div>
     </div>
   );
